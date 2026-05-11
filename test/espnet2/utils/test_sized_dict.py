@@ -69,3 +69,24 @@ def test_SizedDict_contains():
 def test_SizedDict_len():
     d = SizedDict(data={"a": 2, "b": 5, "c": 10})
     assert len(d) == 3
+
+
+def test_SizedDict_delete_size():
+    """Deleting a key should correctly reduce the tracked size."""
+    d = SizedDict()
+    x = np.random.randn(10)
+    d["a"] = x
+    size_before = d.size
+    assert size_before > 0
+
+    del d["a"]
+    assert len(d) == 0
+    assert d.size == 0
+
+
+def test_SizedDict_init_with_data_size():
+    """SizedDict initialised with data should track the correct size from the start."""
+    x = np.random.randn(10)
+    d = SizedDict(data={"a": x})
+    expected = sys.getsizeof("a") + get_size(x)
+    assert d.size == expected
