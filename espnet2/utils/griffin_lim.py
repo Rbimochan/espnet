@@ -79,7 +79,7 @@ def griffin_lim(
     assert spc.shape[1] == n_fft // 2 + 1
 
     if V(librosa.__version__) >= V("0.7.0"):
-        # use librosa's fast Grriffin-Lim algorithm
+        # use librosa's fast Griffin-Lim algorithm
         spc = np.abs(spc.T)
         y = librosa.griffinlim(
             S=spc,
@@ -90,9 +90,9 @@ def griffin_lim(
             center=True if spc.shape[1] > 1 else False,
         )
     else:
-        # use slower version of Grriffin-Lim algorithm
+        # use slower version of Griffin-Lim algorithm
         logging.warning(
-            "librosa version is old. use slow version of Grriffin-Lim algorithm."
+            "librosa version is old. use slow version of Griffin-Lim algorithm."
             "if you want to use fast Griffin-Lim, please update librosa via "
             "`source ./path.sh && pip install librosa==0.7.0`."
         )

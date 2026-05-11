@@ -64,7 +64,10 @@ class SizedDict(collections.abc.MutableMapping):
         else:
             self.manager = None
             self.cache = dict(**data)
-        self.size = 0
+        # Initialise size to account for any pre-populated data.
+        self.size = sum(
+            sys.getsizeof(k) + get_size(v) for k, v in self.cache.items()
+        )
 
     def __setitem__(self, key, value):
         if key in self.cache:
